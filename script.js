@@ -114,6 +114,7 @@ function checkPassword(){
 
         // if the password is >= 8 then we use "req ok" in the CSS code(changing it to green)
         r1.className = `req ok`
+
         // if it is not >= 8, then we leave it at "req"
     }else{
         r1.className = `req`
@@ -121,7 +122,21 @@ function checkPassword(){
 
     // we check for uppercase
     if(hasUpperCase(passwordValue)){
-        // if the password has uppercase, then we use `req ok`
+        // if the password has uppercase, then we use the classname `req ok`
         r2.className = `req ok`
+
+        // if the password does not have an uppercase then we leave it at "req"
+    }else{
+        r2.className = `req`
+    }
+
+    // we check for lowercase
+    if(hasLowerCase(passwordValue)){
+        // if the password has lowercase, then we use the classname `req ok`
+        r3.className = `req ok`
+
+        // if the password does not have an lowercase then we leave it at "req"
+    }else{
+        r3.className = `req`
     }
 }
