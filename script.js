@@ -166,7 +166,10 @@ function updateFormState() {
     checkPassword();
 
     // Now we check if the password fully meets all requirements to style the password input box and error message.
+    // get the current password value
     let passwordValue = passwordInput.value;
+
+    // check all individual password requirements
     let isPasswordLengthValid = passwordValue.length >= 8;
     let isPassUpper = hasUpperCase(passwordValue);
     let isPassLower = hasLowerCase(passwordValue);
@@ -176,17 +179,17 @@ function updateFormState() {
     let isPasswordFullyValid = isPasswordLengthValid && isPassUpper && isPassLower && isPassNum;
 
     // If the password field is completely empty, clear any invalid/valid borders or error text
-    if (passwordValue === "") {
+    if (passwordValue === ""){
         passwordInput.className = "";
         passwordError.textContent = "";
     } 
     // If all requirements are met, turn the password input border green
-    else if (isPasswordFullyValid) {
+    if (passwordValue !== "" && isPasswordFullyValid){
         passwordInput.className = "valid";
         passwordError.textContent = "";
     } 
     // If typing but requirements are not yet met, turn the password input border red and show an error
-    else {
+    if (passwordValue !== "" && !isPasswordFullyValid){
         passwordInput.className = "invalid";
         passwordError.textContent = "Password does not meet all requirements";
     }
@@ -202,7 +205,6 @@ function updateFormState() {
     }
 }
 
-
 // 7. Real-time event listeners:
 // As the user types ("input" event) in either the email or password field, we run updateFormState() instantly.
 emailInput.addEventListener("input", updateFormState);
@@ -213,7 +215,7 @@ passwordInput.addEventListener("input", updateFormState);
 // This handles what happens when the user clicks the "Create Account" button.
 form.addEventListener("submit", (e) => {
     
-    // e.preventDefault stops the form from reloading the page automatically.
+    // this stops the form from reloading the page automatically.
     e.preventDefault();
 
     // Re-verify both email and password before allowing final submission
@@ -230,7 +232,7 @@ form.addEventListener("submit", (e) => {
 
     // If everything is correct, temporarily disable the button and show a loading text
     button.setAttribute("disabled", "true");
-    button.textContent = "Creating Account...";
+    button.textContent = "Creating Account......";
 
     // Simulate a network delay (like sending data to a server) using setTimeout
     setTimeout(() => {
