@@ -104,12 +104,14 @@ function hasNumber(text){
     return false
 }
 
+// 4. Activating the password requirement
 // checking the password: we are going to combine the helper functions to activate the password requirements
 function checkPassword(){
 
     let passwordValue = passwordInput.value
 
     // we check if passwordValue length is >= 8
+    // for password length, the reason we did not use helper function is because, the function is straightforward
     if(passwordValue.length >= 8){
 
         // if the password is >= 8 then we use "req ok" in the CSS code(changing it to green)
@@ -138,5 +140,15 @@ function checkPassword(){
         // if the password does not have an lowercase then we leave it at "req"
     }else{
         r3.className = `req`
+    }
+
+    // check for number
+    if(hasNumber(passwordValue)){
+        // if it sees a number
+        r4.className = `req ok`
+
+        // if there is no number
+    }else{
+        r4.className = `req`
     }
 }
