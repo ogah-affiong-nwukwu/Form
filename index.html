@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Validation</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    
+    <!-- the "novalidate" is to stop the form from its default behavior, then in JavaScript we will validate -->
+    <form id="form" class="card" novalidate>
+        <h1>Create Account</h1>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="e.g. john@email.com">
+
+            <!-- this paragraph element is empty and its there incase the user makes a mistake while entering their email address -->
+            <p class="error" id="emailError"></p>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Create a password"/>
+
+            <!-- this paragraph element is empty and its there incase the user makes a mistake while entering their password -->
+            <p class="error" id="passwordError"></p>
+
+            <div class="requirements">
+                <p class="req" id="r1">At least 8 characters</p>
+                <p class="req" id="r2">At least 1 uppercase letter</p>
+                <p class="req" id="r3">At least 1 lowercase letter</p>
+                <p class="req" id="r4">At least 1 number</p>
+            </div>
+        </div>
+
+        <!-- the disabled attribute is to make the buuton not to work, we will use JavaScript to enable it after putting the necessary information and meeting necessary requirements -->
+        <button id="btn" type="submit" disabled>Create Account</button>
+
+        <!-- this is used to display form messages:if we have any message we want to display it will be displayed her; like no network and the form fails, it will tell the user that the form did not submit -->
+        <p class="formMsg" id="formMsg"></p>
+
+    </form>
+
+    <script src="./script.js"></script>
+</body>
+</html>
