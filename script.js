@@ -46,6 +46,8 @@ function checkEmail(){
     // then we will set it to valid after we are sure that the email the user put is correct
     emailInput.className = `valid`
 
+    return true
+
 }
 
 // 3. Using helper functions to validate the paswword
@@ -152,3 +154,107 @@ function checkPassword(){
         r4.className = `req`
     }
 }
+
+// 5. Combining everything: Overall validation and button state management function
+function updateFormState() {
+    
+    // We run checkEmail() to see if the user's email input currently passes all formatting rules.
+    // It returns true if valid, or false if invalid.
+    let isEmailValid = checkEmail();
+    
+    // We call checkPassword() to update the requirement checklist colors (turning them green via "req ok" when met).
+    checkPassword();
+
+    // Now we check if the password fully meets all requirements to style the password input box and error message.
+    let passwordValue = passwordInput.value;
+    let isPasswordLengthValid = passwordValue.length >= 8;
+    let isPassUpper = hasUpperCase(passwordValue);
+    let isPassLower = hasLowerCase(passwordValue);
+    let isPassNum = hasNumber(passwordValue);
+
+    // All four rules must be true for the password to be considered fully valid
+    let isPasswordFullyValid = isPasswordLengthValid && isPassUpper && isPassLower && isPassNum;
+
+    // If the password field is completely empty, clear any invalid/valid borders or error text
+    if (passwordValue === "") {
+        passwordInput.className = "";
+        passwordError.textContent = "";
+    } 
+    // If all requirements are met, turn the password input border green
+    else if (isPasswordFullyValid) {
+        passwordInput.className = "valid";
+        passwordError.textContent = "";
+    } 
+    // If typing but requirements are not yet met, turn the password input border red and show an error
+    else {
+        passwordInput.className = "invalid";
+        passwordError.textContent = "Password does not meet all requirements";
+    }
+
+    // 6. Enabling or disabling the submit button:
+    // The button should ONLY work if both the email and the password are fully valid.
+    if (isEmailValid && isPasswordFullyValid) {
+        // Remove the "disabled" attribute so the button can be clicked
+        button.removeAttribute("disabled");
+    } else {
+        // Keep or add the "disabled" attribute so the button remains unclickable
+        button.setAttribute("disabled", "true");
+    }
+}
+
+
+// 7. Real-time event listeners:
+// As the user types ("input" event) in either the email or password field, we run updateFormState() instantly.
+emailInput.addEventListener("input", updateFormState);
+passwordInput.addEventListener("input", updateFormState);
+
+
+// 8. Form Submission Handler:
+// This handles what happens when the user clicks the "Create Account" button.
+form.addEventListener("submit", (e) => {
+    
+    // e.preventDefault stops the form from reloading the page automatically.
+    e.preventDefault();
+
+    // Re-verify both email and password before allowing final submission
+    let isEmailValid = checkEmail();
+    let passwordValue = passwordInput.value;
+    let isPasswordFullyValid = passwordValue.length >= 8 && hasUpperCase(passwordValue) && hasLowerCase(passwordValue) && hasNumber(passwordValue);
+
+    // If either check fails, show a general form error message and stop here
+    if (!isEmailValid || !isPasswordFullyValid) {
+        formMessage.style.color = "#ff6b6b";
+        formMessage.textContent = "Please fix the errors above before submitting.";
+        return;
+    }
+
+    // If everything is correct, temporarily disable the button and show a loading text
+    button.setAttribute("disabled", "true");
+    button.textContent = "Creating Account...";
+
+    // Simulate a network delay (like sending data to a server) using setTimeout
+    setTimeout(() => {
+        // Display a success message
+        formMessage.style.color = "#7cFFB2";
+        formMessage.textContent = "Account successfully created!";
+        button.textContent = "Create Account";
+        
+        // Reset the form fields back to empty
+        form.reset();
+        
+        // Clear all input borders and checklist bullet point colors back to default
+        emailInput.className = "";
+        passwordInput.className = "";
+        r1.className = "req";
+        r2.className = "req";
+        r3.className = "req";
+        r4.className = "req";
+        emailError.textContent = "";
+        passwordError.textContent = "";
+
+        // Clear the success message after 3 seconds
+        setTimeout(() => {
+            formMessage.textContent = "";
+        }, 3000);
+    }, 1200);
+});
